@@ -3,9 +3,8 @@
 import unittest
 import pprint
 
-DEBUG = True
+DEBUG = 1
 
-COUNTER = 0
 
 def get_manhattan_distance(grid, home_xy, park_xy):
     """ :grid: an NxN list of strings where each character is either a park 'P', home 'H', or empty ' '
@@ -15,15 +14,11 @@ def get_manhattan_distance(grid, home_xy, park_xy):
         brief: Return the minimum distance (as an integer) one must walk from the home to the park.
                Note that residents cannot walk or swim through water; they must walk aruond.
     """
-    #global COUNTER
-    #COUNTER += 1
-
-    #return COUNTER
 
     # naive approach: assume residents can walk/swim through water
     distance = abs(home_xy[0] - park_xy[0]) + abs(home_xy[1] - park_xy[1])
 
-    if DEBUG:
+    if DEBUG >= 2:
         print("H: ({},{}) , P: ({},{}) , D = {}".format(
             *home_xy, *park_xy, distance
         ))
@@ -32,11 +27,15 @@ def get_manhattan_distance(grid, home_xy, park_xy):
 
 
 def plan_city(grid, parks):
+    # so the first line of actual debug printing is not on the same line as the unittest output
+    if DEBUG >= 1:
+        print("")
+
     # scan the grid for homes and empty spaces
     homes = []
     empties = []
-    for x, row in enumerate(grid):
-        for y, cell in enumerate(row):
+    for y, row in enumerate(grid):
+        for x, cell in enumerate(row):
             if cell == 'H':
                 homes.append([x, y])
             elif cell == ' ':
@@ -61,14 +60,21 @@ def plan_city(grid, parks):
     park_distances_sorted = sorted(park_distances, key=lambda x: x[1])
     best_parks = [x[0] for x in park_distances_sorted[:parks]]
 
+    if DEBUG >= 1:
+        print("park locations, sorted from best to worst:")
+        for i, park_distance in enumerate(park_distances_sorted):
+            park, distance = park_distance
+            print("park #{}: location = {}, distance = {}".format(i + 1, park, distance))
+
     # don't mutate the original grid - copy into a new list
     output_grid = list(grid)
 
     # fill the parks into the grid
     for park_xy in best_parks:
-        as_list = list(output_grid[x])
+        x, y = park_xy
+        as_list = list(output_grid[y])
         as_list[y] = 'P'
-        output_grid[x] = ''.join(as_list)
+        output_grid[y] = ''.join(as_list)
 
     return output_grid
 
@@ -85,7 +91,16 @@ def _print_grid(grid):
 
 
 class TestMinimizeParksHomesDistance(unittest.TestCase):
-    def test_one(self):
+    def _base_test(self, observed, expected):
+        if DEBUG >= 1:
+            print("observed:")
+            _print_grid(observed)
+            print("expected:")
+            _print_grid(expected)
+
+        self.assertEqual(observed, expected)
+
+    def test_small(self):
         observed = plan_city(
             grid = [
                 "   H ",
@@ -99,13 +114,23 @@ class TestMinimizeParksHomesDistance(unittest.TestCase):
             " WPW ",
             "H    ",
         ]
-        if DEBUG:
-            print("observed:")
-            _print_grid(observed)
-            print("expected:")
-            _print_grid(expected)
+        self._base_test(observed, expected)
 
-        self.assertEqual(observed, expected)
+    def test_big(self):
+        observed = plan_city(
+            grid = [
+                "   H    H",
+                " W  WHW  ",
+                "H    W   ",
+            ],
+            parks = 1,
+        )
+        expected = [
+            "   H ",
+            " WPW ",
+            "H    ",
+        ]
+        self._base_test(observed, expected)
 
 
 if __name__ == '__main__':
