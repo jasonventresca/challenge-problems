@@ -15,13 +15,24 @@ def get_manhattan_distance(grid, home_xy, park_xy):
         brief: Return the minimum distance (as an integer) one must walk from the home to the park.
                Note that residents cannot walk or swim through water; they must walk aruond.
     """
-    global COUNTER
-    COUNTER += 1
+    #global COUNTER
+    #COUNTER += 1
 
-    return COUNTER
+    #return COUNTER
+
+    # naive approach: assume residents can walk/swim through water
+    distance = abs(home_xy[0] - park_xy[0]) + abs(home_xy[1] - park_xy[1])
+
+    if DEBUG:
+        print("H: ({},{}) , P: ({},{}) , D = {}".format(
+            *home_xy, *park_xy, distance
+        ))
+
+    return distance
 
 
 def plan_city(grid, parks):
+    # scan the grid for homes and empty spaces
     homes = []
     empties = []
     for x, row in enumerate(grid):
@@ -31,9 +42,11 @@ def plan_city(grid, parks):
             elif cell == ' ':
                 empties.append([x, y])
 
-    # mapping of park coordinates to their total walking distance
+    # initialize a mapping of park coordinates to their total walking distance
     park_distances = []
 
+    # consider putting a park in each empty space.
+    # compute the manhattan distances for all home residents and record that along with the prospective park location.
     for empty in empties:
         # try putting a park in this empty spot
         park = empty
@@ -59,23 +72,40 @@ def plan_city(grid, parks):
 
     return output_grid
 
+
+def _print_grid(grid):
+    if not grid:
+        return
+
+    width = len(grid[0])
+    print("+" + "-" * width + "+")
+    for row in grid:
+        print("|" + row + "|")
+    print("+" + "-" * width + "+")
+
+
 class TestMinimizeParksHomesDistance(unittest.TestCase):
     def test_one(self):
-        self.assertEqual(
-            plan_city(
-                grid = [
-                    "   H ",
-                    " W W ",
-                    "H    ",
-                ],
-                parks = 1,
-            ),
-            [
+        observed = plan_city(
+            grid = [
                 "   H ",
-                " WPW ",
+                " W W ",
                 "H    ",
-            ]
+            ],
+            parks = 1,
         )
+        expected = [
+            "   H ",
+            " WPW ",
+            "H    ",
+        ]
+        if DEBUG:
+            print("observed:")
+            _print_grid(observed)
+            print("expected:")
+            _print_grid(expected)
+
+        self.assertEqual(observed, expected)
 
 
 if __name__ == '__main__':
