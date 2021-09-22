@@ -117,6 +117,17 @@ class TestMinimizeParksHomesDistance(unittest.TestCase):
         self._base_test(observed, expected)
 
     def test_big(self):
+        # thinking out loud...
+        # wrong solution:
+        #       "   H  P H",
+        #       " W  WHW  ", 8
+        #       "HP   W   ",
+
+        # right solution:
+        #       "   H P  H",
+        #       " W  WHW  ", 7  <---
+        #       "HP   W   ",
+
         observed = plan_city(
             grid = [
                 "   H    H",
@@ -126,9 +137,9 @@ class TestMinimizeParksHomesDistance(unittest.TestCase):
             parks = 1,
         )
         expected = [
-            "   H ",
-            " WPW ",
-            "H    ",
+            "   H P  H",
+            " W  WHW  ",
+            "HP   W   ",
         ]
         self._base_test(observed, expected)
 
