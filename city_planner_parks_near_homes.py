@@ -1,13 +1,35 @@
 #!/usr/bin/env python3
 
-grid = """
-   H 
- WWW 
-H    
-"""
-
-final_grid = [x for x in grid if x != "\n"]
-
+import unittest
 import pprint
-pprint.pprint(final_grid)
-print("grid size = {}".format(len(final_grid)))
+
+DEBUG = True
+
+def plan_city(grid, parks):
+    for x, row in enumerate(grid):
+        for y, cell in enumerate(row):
+            pass
+
+    return []
+
+class TestMinimizeParksHomesDistance(unittest.TestCase):
+    def test_one(self):
+        self.assertEqual(
+            plan_city(
+                grid = [
+                    "   H ",
+                    " W W ",
+                    "H    ",
+                ],
+                parks = 1,
+            ),
+            [
+                "   H ",
+                " WPW ",
+                "H    ",
+            ]
+        )
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
