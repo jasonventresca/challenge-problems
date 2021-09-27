@@ -3,6 +3,7 @@
 import unittest
 import logging
 import typing
+import pprint
 
 """
 Daily Coding Problem / Inbox Problem #7 / Medium Difficulty
@@ -45,7 +46,9 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
             return set()
 
         try:
+            ROOT_LOGGER.debug("d='{}', prev='{}'".format(d, prev))
             past_2_digits = int("{}{}".format(prev, d))
+            ROOT_LOGGER.debug("made it here")
             decoded_multi = _decode_single_char(past_2_digits)
             # The pasts two digits can be interpreted
             # as a valid, single character.
@@ -53,16 +56,17 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
             # merged into our final result set.
             head = message[:-2] + decoded_multi
             if i < len(digits) - 1:
-                tails_set = _get_all_valid_decodings(digits[i:])
+                numeric_tail = int("".join([str(x) for x in digits[i:]]))
+                tails_set = _get_all_valid_decodings(numeric_tail)
                 for tail in tails_set:
                     ret.add(head + tail)
             else:
                 # TODO: Comment to explain here.
                 ret.add(head)
 
-        except:
+        except Exception as e:
             # TODO: Catch a custom (or otherwise adequately specific) exception to mitigate against a potential bug in reacting to the wrong exception.
-            pass
+            ROOT_LOGGER.warning(e)
 
         prev = d
 
@@ -77,7 +81,11 @@ def decode_message(n: int) -> int:
         :returns:   positive integer, the total number of valid messages that can be decoded from the input message
     """
     try:
-        return len(_get_all_valid_decodings(n))
+        res = _get_all_valid_decodings(n)
+        ROOT_LOGGER.debug("decode_message(): res =\n{}".format(
+            pprint.pformat(res)
+        ))
+        return len(res)
     except:
         ROOT_LOGGER.exception("decode_message(): fatal exception")
         return 0
@@ -135,7 +143,7 @@ class TestCaseOne(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.WARNING)
+    logging.basicConfig(level=logging.DEBUG)
     ROOT_LOGGER = logging.getLogger()
 
     for x in range(1, 26 + 1):
