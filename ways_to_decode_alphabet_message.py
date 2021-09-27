@@ -49,18 +49,20 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
             decoded_multi = _decode_single_char(past_2_digits)
             # The pasts two digits can be interpreted
             # as a valid, single character.
-            # Branch off to a new message that will be
+            # Branch off to any new messages that can be
             # merged into our final result set.
-            ret.add(
-                message[:-2] \
-                + decoded_multi \
-                + (
-                    _get_all_valid_decodings(digits[i:])
-                    if i < len(digits) - 1 else ""
-                )
-            )
+            head = message[:-2] + decoded_multi
+            if i < len(digits) - 1:
+                tails_set = _get_all_valid_decodings(digits[i:])
+                for tail in tails_set:
+                    ret.add(head + tail)
+            else:
+                # TODO: Comment to explain here.
+                ret.add(head)
 
-        except: pass
+        except:
+            # TODO: Catch a custom (or otherwise adequately specific) exception to mitigate against a potential bug in reacting to the wrong exception.
+            pass
 
         prev = d
 
@@ -74,7 +76,11 @@ def decode_message(n: int) -> int:
         :param n:   integer from 1 to 26 representing the encoded message
         :returns:   positive integer, the total number of valid messages that can be decoded from the input message
     """
-    return len(_get_all_valid_decodings(n))
+    try:
+        return len(_get_all_valid_decodings(n))
+    except:
+        ROOT_LOGGER.exception("decode_message(): fatal exception")
+        return 0
 
 
 def _decode_single_char(n: int) -> str:
@@ -129,7 +135,7 @@ class TestCaseOne(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.WARNING)
     ROOT_LOGGER = logging.getLogger()
 
     for x in range(1, 26 + 1):
