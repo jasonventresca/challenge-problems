@@ -128,15 +128,6 @@ class TestCaseOne(unittest.TestCase):
         self.assertEqual(decode_message(110), 1)
 
 
-    def test_case_one(self):
-        self.assertEqual(1, True)
-
-        with self.assertRaises(KeyError):
-            raise KeyError()
-
-        return
-
-
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     ROOT_LOGGER = logging.getLogger()
