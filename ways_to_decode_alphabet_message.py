@@ -18,6 +18,9 @@ You can assume that the messages are decodable.
 For example, "001" is not allowed.
 """
 
+class NotEnoughCharsToDecodeMulti(Exception):
+    pass
+
 
 def _get_all_valid_decodings(n: int) -> typing.Set[str]:
     """
@@ -47,6 +50,9 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
             message_valid = False
 
         try:
+            if not prev:
+                raise NotEnoughCharsToDecodeMulti()
+
             ROOT_LOGGER.debug("d='{}', prev='{}'".format(d, prev))
             past_2_digits = int("{}{}".format(prev, d))
             decoded_multi = _decode_single_char(past_2_digits)
@@ -65,6 +71,9 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
                 # TODO: Comment to explain here.
                 ROOT_LOGGER.debug("adding head = {}".format(head))
                 ret.add(head)
+
+        except NotEnoughCharsToDecodeMulti as e:
+            pass
 
         except Exception as e:
             # TODO: Catch a custom (or otherwise adequately specific) exception to mitigate against a potential bug in reacting to the wrong exception.
