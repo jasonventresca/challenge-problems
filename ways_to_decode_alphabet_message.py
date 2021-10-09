@@ -75,19 +75,19 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
     return ret
 
 
-def decode_message(n: int) -> int:
+def count_valid_decodings(n: int) -> int:
     """
         :param n:   integer from 1 to 26 representing the encoded message
         :returns:   positive integer, the total number of valid messages that can be decoded from the input message
     """
     try:
         res = _get_all_valid_decodings(n)
-        ROOT_LOGGER.debug("decode_message(): res =\n{}".format(
+        ROOT_LOGGER.debug("count_valid_decodings(): res =\n{}".format(
             pprint.pformat(res)
         ))
         return len(res)
     except:
-        ROOT_LOGGER.exception("decode_message(): fatal exception")
+        ROOT_LOGGER.exception("count_valid_decodings(): fatal exception")
         return 0
 
 
@@ -130,16 +130,19 @@ class TestCaseOne(unittest.TestCase):
 
     # TODO - rename test case method names
     def test_1(self):
-        self.assertEqual(decode_message(111), 3)
+        self.assertEqual(count_valid_decodings(111), 3)
 
     def test_2(self):
-        self.assertEqual(decode_message(26), 2)
+        self.assertEqual(count_valid_decodings(26), 2)
 
     def test_3(self):
-        self.assertEqual(decode_message(101), 1)
+        self.assertEqual(count_valid_decodings(101), 1)
 
     def test_4(self):
-        self.assertEqual(decode_message(110), 1)
+        self.assertEqual(count_valid_decodings(110), 1)
+
+    def test_5(self):
+        self.assertEqual(count_valid_decodings(11), 2)
 
 
 if __name__ == "__main__":
