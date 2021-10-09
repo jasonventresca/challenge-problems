@@ -33,7 +33,6 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
     message = ""
     for i, d in enumerate(digits):
         ROOT_LOGGER.debug("evaluating: '{}'".format(d))
-        ROOT_LOGGER.debug(" -> {}".format("to do"))
 
         try:
             decoded_single = _decode_single_char(d)
@@ -42,26 +41,28 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
         except:
             # TODO: Catch a custom (or otherwise adequately specific) exception to mitigate against a potential bug in reacting to the wrong exception.
 
-            # Assume the exception was due to attempting to decode a zero.
-            return set()
+            # The exception was either due to attempting to decode a zero,
+            # or an otherwise invalid character (represented numerically).
+            pass
 
         try:
             ROOT_LOGGER.debug("d='{}', prev='{}'".format(d, prev))
             past_2_digits = int("{}{}".format(prev, d))
-            ROOT_LOGGER.debug("made it here")
             decoded_multi = _decode_single_char(past_2_digits)
-            # The pasts two digits can be interpreted
+            # The past two digits can be interpreted
             # as a valid, single character.
             # Branch off to any new messages that can be
             # merged into our final result set.
             head = message[:-2] + decoded_multi
             if i < len(digits) - 1:
-                numeric_tail = int("".join([str(x) for x in digits[i:]]))
+                numeric_tail = int("".join([str(x) for x in digits[i+1:]]))
                 tails_set = _get_all_valid_decodings(numeric_tail)
                 for tail in tails_set:
+                    ROOT_LOGGER.debug("adding head = {} , tail = {}".format(head, tail))
                     ret.add(head + tail)
             else:
                 # TODO: Comment to explain here.
+                ROOT_LOGGER.debug("adding head = {}".format(head))
                 ret.add(head)
 
         except Exception as e:
@@ -70,6 +71,7 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
 
         prev = d
 
+    ROOT_LOGGER.debug("adding accumulated message: {}".format(message))
     ret.add(message)
 
     return ret
