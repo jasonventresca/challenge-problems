@@ -30,7 +30,6 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
 
     digits = tuple([int(x) for x in str(n)])
     ret = set()
-    print()
     prev = None
     past_2_digits = None
     message = ""
@@ -94,6 +93,9 @@ def count_valid_decodings(n: int) -> int:
         :param n:   integer from 1 to 26 representing the encoded message
         :returns:   positive integer, the total number of valid messages that can be decoded from the input message
     """
+    print()
+    print("test case: n = {}".format(n))
+
     try:
         res = _get_all_valid_decodings(n)
         ROOT_LOGGER.debug("count_valid_decodings(): res =\n{}".format(
