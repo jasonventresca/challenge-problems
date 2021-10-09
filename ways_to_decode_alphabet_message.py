@@ -31,6 +31,7 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
     prev = None
     past_2_digits = None
     message = ""
+    message_valid = True
     for i, d in enumerate(digits):
         ROOT_LOGGER.debug("evaluating: '{}'".format(d))
 
@@ -43,7 +44,7 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
 
             # The exception was either due to attempting to decode a zero,
             # or an otherwise invalid character (represented numerically).
-            pass
+            message_valid = False
 
         try:
             ROOT_LOGGER.debug("d='{}', prev='{}'".format(d, prev))
@@ -68,11 +69,13 @@ def _get_all_valid_decodings(n: int) -> typing.Set[str]:
         except Exception as e:
             # TODO: Catch a custom (or otherwise adequately specific) exception to mitigate against a potential bug in reacting to the wrong exception.
             ROOT_LOGGER.warning(e)
+            message_valid = False
 
         prev = d
 
-    ROOT_LOGGER.debug("adding accumulated message: {}".format(message))
-    ret.add(message)
+    if message_valid:
+        ROOT_LOGGER.debug("adding accumulated message: {}".format(message))
+        ret.add(message)
 
     return ret
 
