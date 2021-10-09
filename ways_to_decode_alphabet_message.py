@@ -144,19 +144,22 @@ class TestCaseOne(unittest.TestCase):
 
     # TODO - rename test case method names
     def test_1(self):
-        self.assertEqual(count_valid_decodings(111), 3)
+        self.assertEqual(count_valid_decodings(111), 3) # aaa , ka , ak
 
     def test_2(self):
-        self.assertEqual(count_valid_decodings(26), 2)
+        self.assertEqual(count_valid_decodings(26), 2) # bf , z
 
     def test_3(self):
-        self.assertEqual(count_valid_decodings(101), 1)
+        self.assertEqual(count_valid_decodings(101), 1) # ja
 
     def test_4(self):
-        self.assertEqual(count_valid_decodings(110), 1)
+        self.assertEqual(count_valid_decodings(110), 1) # aj
 
     def test_5(self):
-        self.assertEqual(count_valid_decodings(11), 2)
+        self.assertEqual(count_valid_decodings(11), 2) # aa , k
+
+    def test_6(self):
+        self.assertEqual(count_valid_decodings(110101), 1) # ajja
 
 
 if __name__ == "__main__":
