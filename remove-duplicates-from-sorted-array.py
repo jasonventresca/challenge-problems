@@ -6,14 +6,17 @@ DEBUG = True
 from typing import List
 
 class Solution:
-    def removeDuplicates(self, nums: List[int]) -> int:
-        if DEBUG: print(f'### input: {nums}')
-
+    def easy(self, nums: List[int]) -> int:
         dedup = list(sorted(set(nums)))
         for i, v in enumerate(dedup):
             nums[i] = dedup[i]
         k = len(dedup)
         return k
+
+    def removeDuplicates(self, nums: List[int]) -> int:
+        if DEBUG: print(f'### input: {nums}')
+
+        return self.easy(nums)
 
 def main():
     test_cases = [
