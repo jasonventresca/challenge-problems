@@ -3,7 +3,7 @@
 
 from typing import List
 
-DEBUG = True
+DEBUG = False
 
 class Solution:
     @staticmethod
@@ -19,9 +19,55 @@ class Solution:
         """
         Do not return anything, modify nums1 in-place instead.
         """
-        print(nums1)
-        self.shift_right(nums1, 0)
-        print(nums1)
+        if DEBUG: print(f'nums1: {nums1}')
+        if DEBUG: print(f'nums2: {nums2}')
+        ######### Definitions #########
+        a = nums1
+        a_i = 0 # current index of a
+        a_val = None # value at current index of a
+        b = nums2
+        b_i = 0 # current index of b
+        b_val = None # value at current index of b
+        ###############################
+        '''
+        Case 1:
+            All of b is sandwiched into a somewhere before the end of the original, non-zero elements of a.
+        Case 2:
+            Some of b is appended past the end of the non-zero elements of a.
+        '''
+        if DEBUG: print(f'before:\n\t{a}')
+        # Step through each element in b
+        # Starting at head of a, advance until the current element of b is greater than or equal to the the current element of a
+        # Then, shift the rest of a right, and insert the b value into the open location
+        while b_i < n:
+            while a_i < m + b_i:
+                a_val = a[a_i]
+                b_val = b[b_i]
+                if DEBUG: print(f'a[{a_i}]: {a_val}')
+                if DEBUG: print(f'b[{b_i}]: {b_val}')
+                if b_val <= a_val:
+                    self.shift_right(a, a_i)
+                    a[a_i] = b_val
+                    b_i += 1
+                else:
+                    pass
+
+                #if DEBUG: print(f'a: {a}')
+                if DEBUG: print(f'nums1: {nums1}')
+                if DEBUG: print()
+                a_i += 1
+
+            if DEBUG: print('--- surpassed original a ---')
+            a_val = a[a_i]
+            b_val = b[b_i]
+            if DEBUG: print(f'a[{a_i}]: {a_val}')
+            if DEBUG: print(f'b[{b_i}]: {b_val}')
+            a[a_i] = b_val
+            a_i += 1
+            b_i += 1
+
+        if DEBUG: print(f'after:\n\t{nums1}')
+        return nums1
 
 def main():
     test_cases = [
