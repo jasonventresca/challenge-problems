@@ -13,10 +13,39 @@ class Solution:
         k = len(dedup)
         return k
 
+    def hard(self, nums: List[int]) -> int:
+        i = 0
+        k = len(nums)
+        prev = None
+        dup = False
+        while i < k:
+            if DEBUG: print(f'''
+            i = {i}
+            k = {k}
+            nums = {nums}
+            cur = {nums[i]}
+            prev = {prev}
+            ---
+            '''.strip())
+            if prev is not None and nums[i] == prev:
+                nums.pop(i)
+                dup = True
+                k -= 1
+            else:
+                dup = False
+
+            if i+1 < k:
+                prev = nums[i]
+
+            if not dup:
+                i += 1
+
+        return k
+
     def removeDuplicates(self, nums: List[int]) -> int:
         if DEBUG: print(f'### input: {nums}')
 
-        return self.easy(nums)
+        return self.hard(nums)
 
 def main():
     test_cases = [
@@ -27,14 +56,21 @@ def main():
             # Expected Output
             [1,2],
         ),
+        # Test case #2
+        (
+            # Input
+            [0,0,1,1,1,2,2,3,3,4],
+            # Expected Output
+            [0,1,2,3,4],
+        ),
     ]
     s = Solution()
     for (input_, expected_output) in test_cases:
         k = s.removeDuplicates(input_)
-        assert k == len(expected_output)
-        assert (expected_output == input_[:k]), \
-            f'\nexpected: {expected_output}' \
-            f'\n  result: {input_}'
+
+        error_msg = f'\nexpected: {expected_output}\n  result: {input_}'
+        assert k == len(expected_output), error_msg
+        assert (expected_output == input_[:k]), error_msg
     print('All tests passed : )')
 
 if __name__ == '__main__':
