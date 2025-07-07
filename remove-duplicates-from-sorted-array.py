@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+#   difficulty: easy
+#   topics: array, two pointers
 
 DEBUG = True
 

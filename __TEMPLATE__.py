@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # https://leetcode.com/??? <-- TODO: Problem URL goes here.
+#   difficulty: TODO: difficulty level goes here
+#   topics: TODO: topics go here
 
 DEBUG = True
 
