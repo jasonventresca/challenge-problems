@@ -27,15 +27,15 @@ class Solution:
             prev = {prev}
             ---
             '''.strip())
+            if i > 0:
+                prev = nums[i-1]
+
             if prev is not None and nums[i] == prev:
                 nums.pop(i)
                 dup = True
                 k -= 1
             else:
                 dup = False
-
-            if i+1 < k:
-                prev = nums[i]
 
             if not dup:
                 i += 1
