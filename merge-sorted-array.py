@@ -3,7 +3,7 @@
 
 from typing import List
 
-DEBUG = False
+DEBUG = True
 
 class Solution:
     @staticmethod
@@ -40,7 +40,7 @@ class Solution:
         # Starting at head of a, advance until the current element of b is greater than or equal to the the current element of a
         # Then, shift the rest of a right, and insert the b value into the open location
         while b_i < n:
-            while a_i < m + b_i:
+            while a_i < m + b_i and b_i < n:
                 a_val = a[a_i]
                 b_val = b[b_i]
                 if DEBUG: print(f'a[{a_i}]: {a_val}')
@@ -58,6 +58,9 @@ class Solution:
                 a_i += 1
 
             if DEBUG: print('--- surpassed original a ---')
+            if b_i >= n:
+                break
+
             a_val = a[a_i]
             b_val = b[b_i]
             if DEBUG: print(f'a[{a_i}]: {a_val}')
@@ -82,6 +85,18 @@ def main():
             ),
             # Expected Output
             [1,2,2,3,5,6],
+        ),
+        # Test case #2
+        (
+            # Input
+            (
+                [2,0],
+                1,
+                [1],
+                1
+            ),
+            # Expected Output
+            [1,2],
         ),
     ]
     s = Solution()
