@@ -5,6 +5,8 @@
 
 from typing import List
 
+import pytest
+
 DEBUG = True
 
 class Solution:
@@ -12,30 +14,20 @@ class Solution:
         if DEBUG: print(f'### nums = {nums} ###')
         return False
 
-def main():
-    test_cases = [
-        # Test case #1
+@pytest.mark.parametrize(
+    'input_data, expected_output',
+    [
         (
-            # Input
             [3,2,3],
-            # Expected Output
             3,
         ),
-        # Test case #1
         (
-            # Input
             [2,2,1,1,1,2,2],
-            # Expected Output
             2,
         ),
-    ]
+    ],
+)
+def test_case(input_data, expected_output):
     s = Solution()
-    for (input_, expected_output) in test_cases:
-        result = s.majorityElement(input_)
-        assert (expected_output == result), \
-            f'\nexpected: {expected_output}' \
-            f'\n  result: {result}'
-    print('All tests passed : )')
-
-if __name__ == '__main__':
-    main()
+    result = s.majorityElement(input_data)
+    assert expected_output == result
