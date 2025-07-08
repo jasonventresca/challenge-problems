@@ -14,8 +14,7 @@ from icecream import ic
 logger = logging.getLogger(__name__)
 
 class Solution:
-    def majorityElement(self, nums: List[int]) -> int:
-        logger.debug(f'### nums = {nums} ###')
+    def easy(self, nums: List[int]) -> int:
         counts = defaultdict(int)
         total = 0
         for n in nums:
@@ -28,6 +27,13 @@ class Solution:
         for k, v in counts.items():
             if v >= half:
                 return k
+
+    def hard(self, nums: List[int]) -> int:
+        pass
+
+    def majorityElement(self, nums: List[int]) -> int:
+        logger.debug(f'### nums = {nums} ###')
+        return self.easy(nums)
 
 @pytest.mark.parametrize(
     'input_data, expected_output',
