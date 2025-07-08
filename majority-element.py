@@ -4,14 +4,15 @@
 #   topics: Array, Hash Table, Divide and Conquer, Sorting, Counting
 
 from typing import List
+import logging
 
 import pytest
 
-DEBUG = True
+logger = logging.getLogger(__name__)
 
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
-        if DEBUG: print(f'### nums = {nums} ###')
+        logger.debug(f'### nums = {nums} ###')
         return False
 
 @pytest.mark.parametrize(
