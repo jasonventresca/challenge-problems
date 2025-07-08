@@ -5,15 +5,29 @@
 
 from typing import List
 import logging
+from collections import defaultdict
+import math
 
 import pytest
+from icecream import ic
 
 logger = logging.getLogger(__name__)
 
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
         logger.debug(f'### nums = {nums} ###')
-        return False
+        counts = defaultdict(int)
+        total = 0
+        for n in nums:
+            counts[n] += 1
+            total += 1
+
+        counts = dict(counts)
+        half = 1 + math.floor(total / 2)
+        logger.debug(ic.format(counts, total, half))
+        for k, v in counts.items():
+            if v >= half:
+                return k
 
 @pytest.mark.parametrize(
     'input_data, expected_output',
@@ -25,6 +39,10 @@ class Solution:
         (
             [2,2,1,1,1,2,2],
             2,
+        ),
+        (
+            [6,5,5],
+            5,
         ),
     ],
 )
