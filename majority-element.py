@@ -29,11 +29,24 @@ class Solution:
                 return k
 
     def hard(self, nums: List[int]) -> int:
-        pass
+        # Implement the "pair-off" algorithm,
+        # a.k.a. Boyer-Moore Majority Vote algorithm
+        cand = None # candidate
+        count = 0
+        for n in nums:
+            if count == 0:
+                cand = n
+                count = 1
+            elif cand == n:
+                count += 1
+            else:
+                count -= 1
+
+        return cand
 
     def majorityElement(self, nums: List[int]) -> int:
         logger.debug(f'### nums = {nums} ###')
-        return self.easy(nums)
+        return self.hard(nums)
 
 @pytest.mark.parametrize(
     'input_data, expected_output',
@@ -49,6 +62,10 @@ class Solution:
         (
             [6,5,5],
             5,
+        ),
+        (
+            [3,3,4],
+            3,
         ),
     ],
 )
