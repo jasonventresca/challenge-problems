@@ -5,12 +5,40 @@
 
 from typing import List
 
-DEBUG = True
+DEBUG = False
 
 class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        ''' ___PSEUDOCODE___
+        Step through the array, forming a sliding window of variable length.
+        For each element in the main array, append it to the tail of the sliding window.
+        After each append, check the sum of the sliding window.
+        If the sliding window meets or exceeds the desired size:
+            Compute the sliding window's cardinality, and low-water mark it.
+            Then, remove the head element.
+            Remove additional head elements, until the sum drops below the desired size.
+        Proceed stepping through the main array.
+        Return fewest or zero (if not set). '''
+
         if DEBUG: print(f'target: {target}, nums: {nums}')
-        return 0
+
+        fewest = None
+        window = list()
+        for x in nums:
+            if DEBUG: print(f'  x: {x}')
+            window.append(x)
+            if DEBUG: print(f'  window: {window}')
+            if sum(window) >= target:
+                # Prune head of window until below target.
+                while sum(window) >= target:
+                    # Record low water mark
+                    card = len(window)
+                    if fewest is None or card < fewest:
+                        fewest = card
+
+                    window = window[1:]
+
+        return fewest or 0
 
 def main():
     test_cases = [
@@ -20,6 +48,20 @@ def main():
             (7, [2,3,1,2,4,3]),
             # Expected Output
             2,
+        ),
+        # Test case #2
+        (
+            # Input
+            (4, [1,4,4]),
+            # Expected Output
+            1,
+        ),
+        # Test case #3
+        (
+            # Input
+            (11, [1,1,1,1,1,1,1,1]),
+            # Expected Output
+            0,
         ),
     ]
     s = Solution()
