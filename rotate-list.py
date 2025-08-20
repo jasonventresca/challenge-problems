@@ -95,6 +95,13 @@ def main():
             # Expected Output
             [4,5,1,2,3],
         ),
+        # Test case #1
+        (
+            # Input
+            ([0,1,2], 4),
+            # Expected Output
+            [2,0,1],
+        ),
     ]
     s = Solution()
     for (input_, expected_output) in test_cases:
