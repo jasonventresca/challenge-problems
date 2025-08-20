@@ -33,9 +33,47 @@ def list_to_node(list_):
 
 class Solution:
     def rotateRight(self, head, k):
+        '''
+        ___PSEUDOCODE___
+        If the list is length n, then to rotate it k times can be simplified
+        to rotating it (k mod n) times.
+        For k < n:
+            To rotate k times means the (n - k)th element becomes the tail,
+            and the (n - k + 1)th element becomes the head.
+
+        The procedure becomes:
+        1. Step through the whole linked list once, i.e. O(n).
+        2. Take note of its total length as n.
+        3. Compute r = k mod n.
+        4. Connect the original tail to the original head (i.e. tail.next = head).
+        5. Designate the desired new tail as the (n - r)th element (i.e. new_tail.next = None).
+        6. But before you do^, grab a handle to the next element, and later return it (as the new head).
+        '''
         print(f'list: {node_to_list(head)}')
         if DEBUG: print(f'head: {head}')
-        return False
+
+        n = 0
+        cur = head
+        while cur:
+            n += 1
+            prev = cur
+            cur = cur.next
+
+        r = k % n
+        print(f'n: {n}')
+        print(f'r: {r}')
+
+        # 4. Connect the original tail to the original head.
+        prev.next = head
+
+        # 5.
+        cur = head
+        for _ in range(n - r):
+            cur = head.next
+        new_head = cur.next
+        cur.next = None
+
+        return new_head
 
 
 def main():
@@ -54,9 +92,9 @@ def main():
             head=list_to_node(input_[0]),
             k=input_[1]
         )
-        assert (expected_output == result), \
+        assert (expected_output == node_to_list(result)), \
             f'\nexpected: {expected_output}' \
-            f'\n  result: {result}'
+            f'\n  result: {node_to_list(result)}'
     print('All tests passed : )')
 
 if __name__ == '__main__':
