@@ -60,6 +60,7 @@ class Solution:
             cur = cur.next
 
         r = k % n
+        print(f'k: {k}')
         print(f'n: {n}')
         print(f'r: {r}')
 
@@ -78,6 +79,13 @@ class Solution:
 
 def main():
     test_cases = [
+        # Test case #0
+        (
+            # Input
+            ([1,2,3,4,5], 1),
+            # Expected Output
+            [5,1,2,3,4],
+        ),
         # Test case #1
         (
             # Input
