@@ -69,8 +69,10 @@ class Solution:
 
         # 5.
         cur = head
-        for _ in range(n - r):
-            cur = head.next
+        for _ in range(n - r - 1):
+            if DEBUG: print(cur.val)
+            cur = cur.next
+        if DEBUG: print(cur.val)
         new_head = cur.next
         cur.next = None
 
