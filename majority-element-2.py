@@ -33,10 +33,43 @@ class Solution:
         return ret
 
     def hard(self, nums: List[int]) -> int:
-        pass
+        # Implement the "triplet-off" algorithm,
+        cand1 = cand2 = None
+        cnt1 = cnt2 = 0
+
+        # Pass 1: find up to two candidates
+        for x in nums:
+            if x == cand1:
+                cnt1 += 1
+            elif x == cand2:
+                cnt2 += 1
+            elif cnt1 == 0:
+                cand1, cnt1 = x, 1
+            elif cnt2 == 0:
+                cand2, cnt2 = x, 1
+            else:
+                cnt1 -= 1
+                cnt2 -= 1
+
+        # Pass 2: verify
+        cnt1 = cnt2 = 0
+        for x in nums:
+            if x == cand1:
+                cnt1 += 1
+            elif x == cand2:
+                cnt2 += 1
+
+        res = []
+        n_third = len(nums) // 3
+        if cnt1 > n_third:
+            res.append(cand1)
+        if cnt2 > n_third:
+            res.append(cand2)
+
+        return res
 
     def majorityElement(self, nums: List[int]) -> int:
-        return self.easy(nums)
+        return self.hard(nums)
 
 @pytest.mark.parametrize(
     'input_data, expected_output',
