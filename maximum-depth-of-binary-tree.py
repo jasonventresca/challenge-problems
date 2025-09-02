@@ -23,16 +23,15 @@ class TreeNode:
         self.left = left
         self.right = right
 
-def list_to_tree(lst: list) -> TreeNode:
-    return TreeNode()
-
-def tree_to_list(root: TreeNode) -> list:
-    return list()
-
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
-        logger.debug(f'input = {tree_to_list(root)}')
-        return 0
+        if root == None:
+            return 0
+        else:
+            return 1 + max(
+                self.maxDepth(root.left),
+                self.maxDepth(root.right),
+            )
 
 @pytest.mark.parametrize(
     'input_data, expected_output',
@@ -40,14 +39,26 @@ class Solution:
         # Test case #1
         (
             # Input
-            [3,9,20,None,None,15,7],
+            #[3,9,20,None,None,15,7],
+            TreeNode(val=3,
+                left=TreeNode(val=9),
+                right=TreeNode(val=20,
+                    left=TreeNode(val=15),
+                    right=TreeNode(val=7)
+                ),
+            ),
+
             # Expected Output
             3,
         ),
         # Test case #2
         (
             # Input
-            [1,None,2],
+            #[1,None,2],
+            TreeNode(val=1,
+                left=None,
+                right=TreeNode(val=2)
+            ),
             # Expected Output
             2,
         ),
@@ -55,5 +66,5 @@ class Solution:
 )
 def test_case(input_data, expected_output):
     s = Solution()
-    result = s.maxDepth(list_to_tree(input_data))
+    result = s.maxDepth(input_data)
     assert expected_output == result
