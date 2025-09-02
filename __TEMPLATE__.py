@@ -7,7 +7,7 @@
     $ py.test --log-cli-level=debug -v --tb=no __TEMPLATE__.py
 '''
 
-from typing import List
+from typing import List, Optional
 import logging
 from collections import defaultdict
 import math
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 class Solution:
     def problem(self, input_): # TODO: Paste leetcode-provided method here.
-        logger.debug(f'problem(): input_ = {input_}')
+        logger.debug(f'input: {input_}')
         return False
 
 @pytest.mark.parametrize(
