@@ -20,6 +20,12 @@ logger = logging.getLogger(__name__)
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         logger.debug(f'input: {intervals}')
+        return self.o_n_squared(intervals)
+
+    def o_n_log_n(self, intervals: List[List[int]]) -> List[List[int]]:
+        pass
+
+    def o_n_squared(self, intervals: List[List[int]]) -> List[List[int]]:
         ret = []
         for (st, nd) in intervals:
             logger.debug(f'\t{st},\t{nd}')
