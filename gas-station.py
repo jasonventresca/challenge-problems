@@ -46,11 +46,7 @@ class Solution:
         if tank >= 0:
             if len(gas) > 1:
                 # Made it to the next station...
-                return cls.toNextStop(
-                    gas[1:],
-                    cost[1:],
-                    tank,
-                )
+                return cls.toNextStop(gas[1:], cost[1:], tank)
             else:
                 # Completed the loop :)
                 return tank
