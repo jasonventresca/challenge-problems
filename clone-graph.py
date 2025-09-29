@@ -11,6 +11,7 @@ from typing import List, Optional
 import logging
 from collections import defaultdict
 import math
+from copy import deepcopy
 
 import pytest
 from icecream import ic
@@ -22,12 +23,62 @@ class Node:
         self.val = val
         self.neighbors = neighbors if neighbors is not None else []
 
+    def __repr__(self):
+        #stuff = [str(self.val)]
+        #print(stuff)
+        #for x in self.neighbors:
+        #    print(x)
+        #    stuff += x.__repr__()
+
+        return ', '.join(
+            [str(self.val)]
+            +
+            [x.__repr__() for x in self.neighbors]
+        )
+
+    def __str__(self):
+        return self.__repr__()
+
+    def __eq__(self, other):
+        return repr(self) == repr(other)
+
+IO_1 = Node(
+    val=1,
+    neighbors=[
+        Node(
+            val=2,
+            neighbors=[
+                Node(
+                    val=1,
+                ),
+                Node(
+                    val=3,
+                ),
+            ],
+        ),
+        Node(
+            val=4,
+            neighbors=[
+                Node(
+                    val=1,
+                ),
+                Node(
+                    val=3,
+                ),
+            ],
+        ),
+    ],
+)
+
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         logger.debug(f'node: {node}')
         edges = set()
         self.explore(node, edges)
         print(f'edges: {list(sorted(edges))}')
+
+        #return Node(val=1)
+        #return deepcopy(IO_1)
         return self.constructFromEdges(edges)
 
     @classmethod
@@ -75,34 +126,6 @@ class Solution:
             nodes[k].neighbors = neighbor_nodes
 
         return node
-
-IO_1 = Node(
-    val=1,
-    neighbors=[
-        Node(
-            val=2,
-            neighbors=[
-                Node(
-                    val=1,
-                ),
-                Node(
-                    val=3,
-                ),
-            ],
-        ),
-        Node(
-            val=4,
-            neighbors=[
-                Node(
-                    val=1,
-                ),
-                Node(
-                    val=3,
-                ),
-            ],
-        ),
-    ],
-)
 
 @pytest.mark.parametrize(
     'input_data, expected_output',
