@@ -90,6 +90,23 @@ class Solution:
             # Expected Output
             [3, 14.5, 11],
         ),
+        # Test case #2
+        (
+            # Input
+            TreeNode(
+                val=3,
+                left=TreeNode(
+                    val=9,
+                    left=TreeNode(val=15),
+                    right=TreeNode(val=7)
+                ),
+                right=TreeNode(
+                    val=20,
+                ),
+            ),
+            # Expected Output
+            [3, 14.5, 11],
+        ),
     ],
 )
 def test_case(input_data, expected_output):
