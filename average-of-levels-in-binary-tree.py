@@ -23,10 +23,54 @@ class TreeNode:
         self.left = left
         self.right = right
 
+    def __repr__(self):
+        return ', '.join([
+            str(self.val),
+            self.left.__str__(),
+            self.right.__str__(),
+        ])
+
+    def __str__(self):
+        return self.__repr__()
+
 class Solution:
+    @classmethod
+    def avgOfLowerLevels(cls, nodes: List[TreeNode]) -> List[float]:
+        vals = []
+        for x in nodes:
+            if x and x.val:
+                vals.append(str(x.val))
+        msg = ','.join(vals)
+
+        logger.debug(f'avgOfLowerLevels( {msg} )')
+        sum_ = 0
+        count = 0
+        level_below = []
+        for node in nodes:
+            if node and node.val:
+                sum_ += node.val
+                count += 1
+                level_below += [
+                    node.left,
+                    node.right,
+                ]
+
+        avg = float(sum_) / float(count) if count else float(0)
+        ret = [avg]
+        if level_below and any([x is not None for x in level_below]):
+            ret += cls.avgOfLowerLevels(level_below)
+
+        logger.debug(f' -> about to return ret ({type(ret)}): {ret}')
+        return ret
+
     def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
         logger.debug(f'root: {root}')
-        return False
+        if not root.val:
+            return 0
+
+        return self.avgOfLowerLevels([
+            root,
+        ])
 
 @pytest.mark.parametrize(
     'input_data, expected_output',
