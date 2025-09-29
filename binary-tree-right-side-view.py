@@ -36,6 +36,22 @@ class TreeNode:
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         print(f'root: {root}')
+        return self.rightmostOfLevelAndBelow([root])
+
+    @classmethod
+    def rightmostOfLevelAndBelow(cls, nodes: List[TreeNode]) -> List[int]:
+        level = []
+        lower_level = []
+        for node in nodes:
+            if node and node.val:
+                level.append(node.val)
+                lower_level += [node.left, node.right]
+
+        ret = [level[-1],] if level else []
+        if any(x is not None for x in lower_level):
+            ret += cls.rightmostOfLevelAndBelow(lower_level)
+
+        return ret
 
 @pytest.mark.parametrize(
     'input_data, expected_output',
