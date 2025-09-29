@@ -28,6 +28,7 @@ class Solution:
         edges = set()
         self.explore(node, edges)
         print(f'edges: {list(sorted(edges))}')
+        return self.constructFromEdges(edges)
 
     @classmethod
     def explore(cls, node, edges):
@@ -36,6 +37,44 @@ class Solution:
             if this_edge not in edges:
                 edges.add(this_edge)
                 cls.explore(nb, edges)
+
+    @classmethod
+    def constructFromEdges(cls, edges):
+        '''
+        ### Phase 1 ###
+        Iterate through list of edges.
+        Create or enrich the two nodes joined by the edge.
+        Enrichment consists of adding the neighbor to the node's list of neighbors.
+        Nodes are tracked in a hashmap, indexed by the node's value.
+        ### Phase 2 ###
+        Set node = the first node.
+        Iterate through the hashmap.
+        For each node in the hashmap,
+        Replace each of its neighbors with the Node object from the hashmap.
+        '''
+        ### Phase 1 ###
+        nodes = dict()
+        for e in sorted(edges):
+            both = (
+                e,
+                tuple(reversed(e)),
+            )
+            for b in both:
+                to, from_ = b
+                if from_ not in nodes:
+                    nodes[from_] = Node(val=from_)
+
+                if to not in nodes[from_].neighbors:
+                    nodes[from_].neighbors.append(to)
+
+        ### Phase 2 ###
+        node = nodes.get(1)
+        for k, v in nodes.items():
+            neighbor_vals = nodes[k].neighbors
+            neighbor_nodes = [nodes[x] for x in neighbor_vals]
+            nodes[k].neighbors = neighbor_nodes
+
+        return node
 
 IO_1 = Node(
     val=1,
