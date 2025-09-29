@@ -25,7 +25,17 @@ class Node:
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         logger.debug(f'node: {node}')
-        return False
+        edges = set()
+        self.explore(node, edges)
+        print(f'edges: {list(sorted(edges))}')
+
+    @classmethod
+    def explore(cls, node, edges):
+        for nb in node.neighbors:
+            this_edge = tuple(sorted([node.val, nb.val]))
+            if this_edge not in edges:
+                edges.add(this_edge)
+                cls.explore(nb, edges)
 
 IO_1 = Node(
     val=1,
