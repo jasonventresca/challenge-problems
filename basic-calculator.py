@@ -35,7 +35,11 @@ class Solution:
             c = s[i]
             logger.info(f'c: {c}')
             if c in digits or c == '(':
-                sign = -1 if prev == '-' else 1
+                sign = 1
+                if prev == '-':
+                    sign = -1
+                    prev = None
+
                 if c in digits:
                     expr = sign * int(c)
                 else: # c == '('
@@ -53,7 +57,8 @@ class Solution:
                     rhs = expr
                     op_sign = 1 if operator == '+' else -1
                     result += op_sign * rhs
-                    logger.debug(f'->         op_sign: {op_sign}')
+                    op_sign_fmt = 'pos' if op_sign == 1 else 'neg' if op_sign == -1 else op_sign
+                    logger.debug(f'->         op_sign: {op_sign_fmt}')
                     operator, op_sign, rhs = None, None, None
                 else:
                     raise ValueError(f'Unexpected operator: "{operator}" !')
@@ -61,7 +66,8 @@ class Solution:
                 logger.debug(f'->  result (after): {result}')
 
             elif c == ')':
-                return result
+                pass
+                #return result
             elif c == '+':
                 operator = '+'
             elif c == '-':
