@@ -141,6 +141,13 @@ class Solution:
             # Input
            #'(1+ -(4+5+2)-3)+(6+8)',
             '(1 - (4+5+2)-3)+(6+8)',
+            # -> calc(whole thing)
+            # -> calc(1 - ...-3)
+            # -> calc(4+5+2)
+            # -> finish: calc(1 - ...-3)
+            # -> resume: calc(whole thing)
+            # -> calc(6+8)
+            # -> finish: calc(whole thing)
             # 1  -  11  - 3 + 14
             # Expected Output
             1,
