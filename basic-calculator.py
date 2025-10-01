@@ -18,6 +18,25 @@ from icecream import ic
 logger = logging.getLogger(__name__)
 
 class Solution:
+    @classmethod
+    def close_expr(cls, s: str) -> int:
+        assert s[0] == '('
+        nest_level = 1
+        i = 1
+        while nest_level > 0:
+            if s[i] == '(':
+                nest_level += 1
+            elif s[i] == ')':
+                nest_level -= 1
+            else:
+                pass
+
+            i += 1
+
+        # e.g. s = '((1))'
+        #      i :  01234
+        return i - 1
+
     def calculate(self, s: str) -> int:
         logger.warning(f's: {s}')
         logger.warning('-' * 30)
@@ -26,10 +45,10 @@ class Solution:
         operator = None
         result = 0
         prev = None
-        stop = False
+        stop_before = -1
         i = 0
         while i < len(s):
-            if stop:
+            if stop_before != -1 and i >= stop_before:
                 break
 
             c = s[i]
@@ -46,7 +65,7 @@ class Solution:
                     logger.debug(f'-> stopping now, before next c: {s[i+1] if i < len(s) else "$"}')
                     logger.debug('x' * 30)
                     expr = sign * self.calculate(s[i+1:])
-                    stop = True
+                    stop_before = 1 + self.close_expr(s[i:]) # char idx after matching closing paren
 
                 logger.debug(f'-> result (before): {result}')
                 logger.debug(f'->        operator: {operator}')
