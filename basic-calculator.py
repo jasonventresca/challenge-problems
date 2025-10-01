@@ -25,32 +25,41 @@ class Solution:
         rhs = None
         operator = None
         result = 0
+        prev = None
         for c in s:
             logger.info(f'c: {c}')
             if c in digits:
                 logger.debug('-> it\'s a digit')
+                sign = -1 if prev == '-' else 1
+                int_c = int(c) * sign
                 if operator is None:
-                    result += int(c)
+                    result += int_c
                 elif operator == '+':
-                    rhs = int(c)
+                    rhs = int_c
                     result += rhs
                     operator, rhs = None, None
                 elif operator == '-':
-                    rhs = int(c)
+                    rhs = int_c
                     result -= rhs
                     operator, rhs = None, None
                 else:
                     raise ValueError(f'Unexpected operator: "{operator}" !')
             elif c == '(':
+                if prev == '-':
+                    # TODO: negative paren expr
+                    pass
                 raise NotImplementedError('(')
             elif c == ')':
                 raise NotImplementedError(')')
             elif c == '+':
                 operator = '+'
             elif c == '-':
-                operator = '-'
+                #operator = '-'
+                prev = '-'
             elif c == ' ':
-                pass
+                if prev == '-':
+                    operator = '-'
+                    prev = None
             else:
                 raise ValueError(f'Parser got unexpected token: "{c}" !')
 
@@ -86,6 +95,20 @@ class Solution:
             '1 + 2 - 3 - 4',
             # Expected Output
             -4,
+        ),
+        # Jason's tinkering case C
+        (
+            # Input
+            '1 + -3',
+            # Expected Output
+            -2,
+        ),
+        # Jason's tinkering case D
+        (
+            # Input
+            '1 - -3',
+            # Expected Output
+            4,
         ),
         ## Test case #3
         #(
