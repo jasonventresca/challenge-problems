@@ -42,15 +42,22 @@ class Solution:
                     expr = sign * self.calculate(s[i+1:])
                     stop = True
 
+                logger.debug(f'-> result (before): {result}')
+                logger.debug(f'->        operator: {operator}')
+                logger.debug(f'->            expr: {expr}')
                 if operator is None:
                     result += expr
                 elif operator in ('+', '-'):
                     rhs = expr
                     op_sign = 1 if operator == '+' else -1
                     result += op_sign * rhs
-                    operator, rhs = None, None
+                    logger.debug(f'->         op_sign: {op_sign}')
+                    operator, op_sign, rhs = None, None, None
                 else:
                     raise ValueError(f'Unexpected operator: "{operator}" !')
+
+                logger.debug(f'->  result (after): {result}')
+
             elif c == ')':
                 return result
             elif c == '+':
