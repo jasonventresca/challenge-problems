@@ -26,31 +26,36 @@ class Solution:
         operator = None
         result = 0
         prev = None
-        for c in s:
+        stop = False
+        for i, c in enumerate(s):
+            if stop:
+                break
+
             logger.info(f'c: {c}')
-            if c in digits:
-                logger.debug('-> it\'s a digit')
+            if c in digits or c == '(':
                 sign = -1 if prev == '-' else 1
-                int_c = int(c) * sign
+                if c in digits:
+                    expr = sign * int(c)
+                else: # c == '('
+                    logger.debug(f'-> stopping now, before next c: {s[i+1] if i < len(s) else "$"}')
+                    logger.debug('x' * 30)
+                    expr = sign * self.calculate(s[i+1:])
+                    stop = True
+
                 if operator is None:
-                    result += int_c
+                    result += expr
                 elif operator == '+':
-                    rhs = int_c
+                    rhs = expr
                     result += rhs
                     operator, rhs = None, None
                 elif operator == '-':
-                    rhs = int_c
+                    rhs = expr
                     result -= rhs
                     operator, rhs = None, None
                 else:
                     raise ValueError(f'Unexpected operator: "{operator}" !')
-            elif c == '(':
-                if prev == '-':
-                    # TODO: negative paren expr
-                    pass
-                raise NotImplementedError('(')
             elif c == ')':
-                raise NotImplementedError(')')
+                return result
             elif c == '+':
                 operator = '+'
             elif c == '-':
@@ -110,13 +115,13 @@ class Solution:
             # Expected Output
             4,
         ),
-        ## Test case #3
-        #(
-        #    # Input
-        #    '(1+(4+5+2)-3)+(6+8)',
-        #    # Expected Output
-        #    23,
-        #),
+        # Test case #3
+        (
+            # Input
+            '(1+(4+5+2)-3)+(6+8)',
+            # Expected Output
+            23,
+        ),
     ],
 )
 def test_case(input_data, expected_output):
