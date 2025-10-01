@@ -136,6 +136,15 @@ class Solution:
             # Expected Output
             23,
         ),
+        # Jason's tinkering case D
+        (
+            # Input
+           #'(1+ -(4+5+2)-3)+(6+8)',
+            '(1 - (4+5+2)-3)+(6+8)',
+            # 1  -  11  - 3 + 14
+            # Expected Output
+            1,
+        ),
     ],
 )
 def test_case(input_data, expected_output):
