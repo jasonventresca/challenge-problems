@@ -35,8 +35,12 @@ class Solution:
                     rhs = int(c)
                     result += rhs
                     operator, rhs = None, None
+                elif operator == '-':
+                    rhs = int(c)
+                    result -= rhs
+                    operator, rhs = None, None
                 else:
-                    raise ValueError('Unexpected operator: "{operator}" !')
+                    raise ValueError(f'Unexpected operator: "{operator}" !')
             elif c == '(':
                 raise NotImplementedError('(')
             elif c == ')':
@@ -44,11 +48,11 @@ class Solution:
             elif c == '+':
                 operator = '+'
             elif c == '-':
-                raise NotImplementedError('-')
+                operator = '-'
             elif c == ' ':
                 pass
             else:
-                raise ValueError('Parser got unexpected token: "{c}" !')
+                raise ValueError(f'Parser got unexpected token: "{c}" !')
 
         return result
 
@@ -75,6 +79,13 @@ class Solution:
             ' 2-1 + 2 ',
             # Expected Output
             3,
+        ),
+        # Jason's tinkering case B
+        (
+            # Input
+            '1 + 2 - 3 - 4',
+            # Expected Output
+            -4,
         ),
         ## Test case #3
         #(
