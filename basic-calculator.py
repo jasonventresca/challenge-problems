@@ -19,14 +19,14 @@ logger = logging.getLogger(__name__)
 
 class Solution:
     def calculate(self, s: str) -> int:
-        logger.debug(f's: {s}')
-        logger.debug('-' * 30)
+        logger.warning(f's: {s}')
+        logger.warning('-' * 30)
         digits = tuple('1234567890')
         rhs = None
         operator = None
         result = 0
         for c in s:
-            logger.debug(f'c: {c}')
+            logger.info(f'c: {c}')
             if c in digits:
                 logger.debug('-> it\'s a digit')
                 if operator is None:
@@ -62,19 +62,20 @@ class Solution:
             # Expected Output
             2,
         ),
+        # Jason's tinkering case A
         (
             # Input
-            '1 + 1 + 2',
+            '1 + 1 + 2 + 4 + 8',
             # Expected Output
-            4,
+            16,
         ),
-        ## Test case #2
-        #(
-        #    # Input
-        #    ' 2-1 + 2 ',
-        #    # Expected Output
-        #    3,
-        #),
+        # Test case #2
+        (
+            # Input
+            ' 2-1 + 2 ',
+            # Expected Output
+            3,
+        ),
         ## Test case #3
         #(
         #    # Input
