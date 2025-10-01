@@ -44,13 +44,10 @@ class Solution:
 
                 if operator is None:
                     result += expr
-                elif operator == '+':
+                elif operator in ('+', '-'):
                     rhs = expr
-                    result += rhs
-                    operator, rhs = None, None
-                elif operator == '-':
-                    rhs = expr
-                    result -= rhs
+                    op_sign = 1 if operator == '+' else -1
+                    result += op_sign * rhs
                     operator, rhs = None, None
                 else:
                     raise ValueError(f'Unexpected operator: "{operator}" !')
