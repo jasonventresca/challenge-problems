@@ -27,10 +27,12 @@ class Solution:
         result = 0
         prev = None
         stop = False
-        for i, c in enumerate(s):
+        i = 0
+        while i < len(s):
             if stop:
                 break
 
+            c = s[i]
             logger.info(f'c: {c}')
             if c in digits or c == '(':
                 sign = -1 if prev == '-' else 1
@@ -71,6 +73,8 @@ class Solution:
                     prev = None
             else:
                 raise ValueError(f'Parser got unexpected token: "{c}" !')
+
+            i += 1
 
         return result
 
