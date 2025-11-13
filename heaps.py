@@ -3,6 +3,8 @@
 from typing import List
 import operator
 
+from icecream import ic
+
 class AbstractBaseHeap:
     cmp = None
 
@@ -47,14 +49,17 @@ class MinHeap:
 
     def push(self, elem: int):
         self.heap.append(elem)
+        #print(self.heap)
         idx = len(self.heap) - 1
         self.heapify_up(idx)
 
     def pop(self):
+        #ic('before pop', self.heap)
         prev_root = self.heap[0]
         self.heap[0] = self.heap[-1]
         self.heap.pop()
         self.heapify_down(0)
+        #ic('after pop', self.heap)
         return prev_root
 
     def parent_of(self, idx: int):
@@ -67,20 +72,24 @@ class MinHeap:
         return 2 * idx + 2
 
     def heapify_down(self, idx: int):
-        largest = idx
+        #ic(self.heap)
+        smallest = idx
         size = len(self.heap)
+        i = 0
 
         while True:
             left = self.left_child_of(idx)
             right = self.right_child_of(idx)
+            #ic(size, idx, smallest, left, right)
 
-            if left < size and self.heap[left] > self.heap[largest]:
-                largest = left
-            if right < size and self.heap[right] > self.heap[largest]:
-                largest = right
-            if largest != idx:
-                self.heap[idx], self.heap[largest] = \
-                    self.heap[largest], self.heap[idx]
+            if left < size and self.heap[left] < self.heap[smallest]:
+                smallest = left
+            if right < size and self.heap[right] < self.heap[smallest]:
+                smallest = right
+            if smallest != idx:
+                self.heap[idx], self.heap[smallest] = \
+                    self.heap[smallest], self.heap[idx]
+                idx = smallest
             else:
                 break
 
@@ -95,12 +104,14 @@ class MinHeap:
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         mh = MinHeap()
+        #ic(nums)
         for n in nums:
             mh.push(n)
             if len(mh.heap) > k:
                 mh.pop()
+            #print('---')
 
-        print("heap:", mh.heap)
+        #print("heap:", mh.heap)
         return mh.heap[0]
 
 if __name__ == '__main__':
