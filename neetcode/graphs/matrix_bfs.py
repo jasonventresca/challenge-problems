@@ -29,12 +29,16 @@ def bfs(grid):
 
     length = 0
     while queue:
-        # Advance to the next layer.
-        length += 1
         for _ in range(len(queue)):
             # Make the next move, within the current layer.
             (r, c) = queue.popleft()
-            visited.add((r,c))
+
+            # Did we reach the end?
+            if r == M-1 and c == N-1:
+                # Shortest path found!
+                return length
+
+            # Consider available neighbors.
             neighbors = (
                 (r+1, c),
                 (r-1, c),
@@ -53,11 +57,11 @@ def bfs(grid):
 
                 # Valid next move. Queue it up.
                 queue.append((nr, nc))
+                visited.add((r,c))
 
-                # Did we reach the end?
-                if nr == M-1 and nc == N-1:
-                    # Shortest path found!
-                    return length
+
+        # Advance to the next layer.
+        length += 1
 
     # BFS exhausted: No valid path found.
     return -1
