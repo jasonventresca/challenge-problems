@@ -57,7 +57,7 @@ def bfs(grid):
 
                 # Valid next move. Queue it up.
                 queue.append((nr, nc))
-                visited.add((r,c))
+                visited.add((nr,nc))
 
 
         # Advance to the next layer.
