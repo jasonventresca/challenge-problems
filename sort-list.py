@@ -36,6 +36,7 @@ class Solution:
         if not head or head.next is None:
             return head
         mid = self.split(head)
+        logger.debug(f'after split: {unlink_list(head)}')
         left = self.sortList(head)
         right = self.sortList(mid)
         return self.merge(left, right)
@@ -65,7 +66,7 @@ class Solution:
         if not head or not head.next:
             return head
         mid = head
-        end = head
+        end = head.next
         while end and end.next:
             mid = mid.next
             end = end.next.next
@@ -79,6 +80,7 @@ class Solution:
         Merge works by creating a new linked list, by appending the smaller of the two leftmost elements of list 1 and list 2, and advancing further into the chosen list.
         As soon as one of the two lists is fully consumed, we can just append the rest of the other list, since it's already sorted within itself, and guaranteed to be larger than the result up to that point.
         '''
+        logger.debug(f'merge:\n\t{unlink_list(list1)}\n\t{unlink_list(list2)}')
         dummyHead = ListNode(0) # set up a head with a dummy node
         result = dummyHead
         while list1 and list2:
@@ -88,7 +90,9 @@ class Solution:
             else:
                 result.next = list2
                 list2 = list2.next
+            result = result.next
         result.next = list1 or list2
+        logger.debug(f'\t-> {unlink_list(dummyHead.next)}')
         return dummyHead.next
 
 def link_list(lst: List) -> ListNode:
