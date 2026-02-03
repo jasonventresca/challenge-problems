@@ -17,22 +17,45 @@ from icecream import ic
 
 logger = logging.getLogger(__name__)
 
-'''
-DP problem definition
-    dp[i]: # of distinct ways to reach step i+1
-Base case
-    dp[0] = 1
-    dp[1] = 2
-Recurrence relation
-    dp[i] = dp[i-1] + dp[i-2]
-Solution
-    for i in range(n+1)
-'''
 class Solution:
     def climbStairs(self, n: int) -> int:
-        return self.dp1(n)
+        return self.recursive(n)
+
+    def recursive(self, n: int) -> int:
+        '''
+        Implement using recursion and memoization.
+        Recursive function starts at n and recurses down to 2 and 1 (base cases).
+        '''
+        memo = {}
+        def inner(k):
+            if k in memo:
+                return memo[k]
+            elif k == 0:
+                return 0
+            elif k == 1:
+                return 1
+            elif k == 2:
+                return 2
+
+            ret = inner(k-1) + inner(k-2)
+            memo[k] = ret
+
+            return ret
+
+        return inner(n)
 
     def dp1(self, n: int) -> int:
+        '''
+        DP problem definition
+            dp[i]: # of distinct ways to reach step i+1
+        Base case
+            dp[0] = 1
+            dp[1] = 2
+        Recurrence relation
+            dp[i] = dp[i-1] + dp[i-2]
+        Solution
+            for i in range(n+1)
+        '''
         logger.debug(f'input: {n}')
         dp = [0] * (n+1)
         dp[0] = 0
