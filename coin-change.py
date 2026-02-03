@@ -19,6 +19,20 @@ logger = logging.getLogger(__name__)
 
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
+        return self.slick(coins, amount)
+
+    def slick(self, coins: List[int], amount: int) -> int:
+        inf = amount + 1
+        dp = [0] + ([inf] * amount)
+        for i in range(1, amount+1):
+            for c in coins:
+                if c <= i:
+                    dp[i] = min(dp[i], dp[i-c]+1)
+        if dp[amount] == inf:
+            return -1
+        return dp[amount]
+
+    def clunky(self, coins: List[int], amount: int) -> int:
         '''
         DP Problem Definition
             dp[i] = fewest number of coins required to make i amount
