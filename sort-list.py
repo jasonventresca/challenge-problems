@@ -32,6 +32,9 @@ class Solution:
         4.  Keep sub-dividing until there's only one element in each sub-list.
         5.  Begin merging (conquer stage) left and right sorted sub-lists (larger one on the right).
         '''
+        if head is None or head.val is None:
+            return
+
         logger.debug(f'sortList({head.val})')
         if not head or head.next is None:
             return head
