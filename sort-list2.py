@@ -76,7 +76,7 @@ class Solution:
         dummy = ListNode(0) # dummy head for list2
         dummy.next = list2
         prevElem2 = dummy
-        while elem1 is not None:
+        while None not in (elem1, elem2):
             if elem1.val < elem2.val:
                 # Prepend elem1 before elem2
                 # prevElem2 | elem1 | elem2
