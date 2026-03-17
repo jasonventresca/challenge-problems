@@ -31,9 +31,13 @@ class Solution:
         4.  Keep sub-dividing until there's only one element in each sub-list.
         5.  Begin merging (conquer stage) left and right sorted sub-lists (larger one on the right).
         '''
+        if not head or head.val is None or head.next is None:
+            return head
+        logger.debug(f'sortList(): head = {unlink_list(head)}')
+
         # Find the midpoint
         mid = self.split(head)
-        logger.debug(f'mid.val = {mid.val}')
+        logger.debug(f'mid.val = {mid.val if mid else None}')
         # Sort left and right halves of the split list
         left = self.sortList(head)
         right = self.sortList(mid)
@@ -48,7 +52,9 @@ class Solution:
         if not head or head.val is None or head.next is None:
             return head
 
-        i1, i2 = head, head
+        dummy = ListNode(0) # dummy head for init
+        dummy.next = head
+        i1, i2 = dummy, dummy
         while i2 and i2.val is not None and i2.next is not None:
             i1 = i1.next
             i2 = i2.next
