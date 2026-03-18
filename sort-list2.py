@@ -72,27 +72,37 @@ class Solution:
             2. if elem1 < elem2, prepend; else append
             3. continue to next elem in list1, repeating steps 1-2 above, until list1 is exhausted '''
         # set up pointers into the two pre-sorted linked lists
+        logger.debug(f'merge(): {unlink_list(list1)}, {unlink_list(list2)}')
         elem1, elem2 = list1, list2
         dummy = ListNode(0) # dummy head for list2
         dummy.next = list2
         prevElem2 = dummy
+        ''' merge(): [1, 10], [60]
+             -> [1, 60] '''
+        ''' 1. Step through list1, placing each element into its appropriate place in list2.
+                2. If elem1 <= elem2: Prepend it there. Advance elem1 pointer.
+                3. Else: Advance elem2 pointer.
+            4. After the while loop terminates, append any remains of list1 onto the end of list2.
+            xxxxxxxxxxxxxxxxxxxx
+            3. Else if elem1 <= elem2.next: append it there.
+            4. Else if elem1 > elem2.next, advance elem2 pointer. '''
         while None not in (elem1, elem2):
             if elem1.val < elem2.val:
                 # Prepend elem1 before elem2
                 # prevElem2 | elem1 | elem2
+                nextToInsert = elem1.next
                 prevElem2.next = elem1
                 elem1.next = elem2
-                prevElem2 = elem2
-                elem2 = elem2.next
-            else:
-                # Append elem1 after elem2
-                # elem2 | elem1 | elem2.next
-                elem1.next = elem2.next
-                elem2.next = elem1
                 prevElem2 = elem1
-                elem2 = elem2.next.next
-            elem1 = elem1.next
+                elem1 = nextToInsert
+            else:
+                # Advance elem2 pointer
+                elem2 = elem2.next
+        # Append any remaining elements from list1 onto list2.
+        if elem1 is not None:
+            prevElem2.next = elem1
 
+        logger.debug(f' -> {unlink_list(dummy.next)}')
         return dummy.next
 
 def link_list(lst: List) -> ListNode:
