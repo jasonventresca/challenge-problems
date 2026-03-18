@@ -66,44 +66,33 @@ class Solution:
         return mid
 
     def merge(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        ''' list1 and list2 have been pre-sorted, so the algorithm for merging in a globally sorted fashion is as follows:
-            0. proceed to insert elements from list1 into list2:
-            1. compare first element of list1 and list2
-            2. if elem1 < elem2, prepend; else append
-            3. continue to next elem in list1, repeating steps 1-2 above, until list1 is exhausted '''
-        # set up pointers into the two pre-sorted linked lists
+        ''' The code is much simpler, cleaner and less bug-prone
+            to just create a new 'result' list (dummy head)
+            and just append from the next element of either list (the smaller of the two)
+            one at a time until both input lists are exhausted. '''
         logger.debug(f'merge(): {unlink_list(list1)}, {unlink_list(list2)}')
-        elem1, elem2 = list1, list2
-        dummy = ListNode(0) # dummy head for list2
-        dummy.next = list2
-        prevElem2 = dummy
-        ''' merge(): [1, 10], [60]
-             -> [1, 60] '''
-        ''' 1. Step through list1, placing each element into its appropriate place in list2.
-                2. If elem1 <= elem2: Prepend it there. Advance elem1 pointer.
-                3. Else: Advance elem2 pointer.
-            4. After the while loop terminates, append any remains of list1 onto the end of list2.
-            xxxxxxxxxxxxxxxxxxxx
-            3. Else if elem1 <= elem2.next: append it there.
-            4. Else if elem1 > elem2.next, advance elem2 pointer. '''
-        while None not in (elem1, elem2):
-            if elem1.val < elem2.val:
-                # Prepend elem1 before elem2
-                # prevElem2 | elem1 | elem2
-                nextToInsert = elem1.next
-                prevElem2.next = elem1
-                elem1.next = elem2
-                prevElem2 = elem1
-                elem1 = nextToInsert
+        # Set up a dummy head (anchor) and an empty result set to build up from list1 + list2.
+        dummyHead = ListNode(0)
+        result = dummyHead
+        while list1 and list2:
+            if list1.val < list2.val:
+                logger.debug(f'... {unlink_list(dummyHead)} + {list1.val}')
+                result.next = list1
+                list1 = list1.next
             else:
-                # Advance elem2 pointer
-                elem2 = elem2.next
-        # Append any remaining elements from list1 onto list2.
-        if elem1 is not None:
-            prevElem2.next = elem1
+                logger.debug(f'... {unlink_list(dummyHead)} + {list2.val}')
+                result.next = list2
+                list2 = list2.next
+            result = result.next
 
-        logger.debug(f' -> {unlink_list(dummy.next)}')
-        return dummy.next
+        # Append whatever's left onto the end.
+        if list1:
+            result.next = list1
+        if list2:
+            result.next = list2
+
+        logger.debug(f' -> {unlink_list(dummyHead.next)}')
+        return dummyHead.next
 
 def link_list(lst: List) -> ListNode:
     nxt = None
